@@ -1,39 +1,40 @@
 # Big Clock — PRD
 
-## Problem Statement (original)
-> Quero uma app que seja um display big clock. Quando deitamos o telefone fica o clock a ocupar todo o ecrã. Deve ter alguns modos:
-> - NOW — hh:mm:ss
-> - TIMER — HH:mm:ss
-> - CHRONO — Hh:mm:ss:ms
-> - COUNTDOWN TO TIME — input a real time (e.g. 23:30), counts down → dd:hh:mm:ss
-> - NYE COUNTDOWN — dd:hh:mm:ss, with option to show last seconds full-screen
->
-> Skin chooser: Moshly (from emptytown/moshly-site-design-tokens), Coder black/green, 8Bit B&W, and one of my own creation.
-> UI should take the least possible space from the clock, but can have controls when in landscape.
-> Last seconds (NYE) customisable from 60 to 10.
+## Problem Statement (original, PT)
+> Quero uma app que seja um display big clock. Quando deitamos o telefone fica o clock a ocupar todo o ecrã.
+> Modos: NOW (hh:mm:ss), TIMER (HH:mm:ss), CHRONO (HH:mm:ss.ms), COUNTDOWN TO TIME (input HH:MM → dd:hh:mm:ss),
+> NYE COUNTDOWN (dd:hh:mm:ss + last seconds fullscreen 10–60s customizável).
+> Skins: Moshly (emptytown/Moshly-Site-Design-Tokens), Coder black/green, 8Bit B&W, one of my creation.
+> UI deve ocupar o mínimo, sem auth, sem dependências Emergent — quero criar repo fora daqui.
 
 ## Architecture
-- **Frontend-only** React app (CRA + craco)
-- **No backend persistence** — all state in `localStorage`
+- **Frontend-only** React app (CRA + craco, alias `@/` → `src/`)
+- **No backend / no auth / no telemetry**
+- **localStorage** for persistence (skin, mode, timer duration, countdown target, NYE threshold, sound)
 - **Audio** via Web Audio API (no external assets)
-- **Auto-resize** of digits via `ResizeObserver` + dynamic font-size measurement (`FitText` component)
-- **Orientation handling** via `matchMedia` + auto-hide of controls after 2.5s in landscape
+- **Auto-resize digits** via ResizeObserver + dynamic font-size (`FitText`)
 
 ## File layout
 ```
-/app/frontend/src/
-├── App.js                        main shell, state, controls, drawers
-├── App.css                       (empty — all styles in index.css)
-├── index.css                     skin variables, layout, animations
-├── index.js                      entry
-├── components/
-│   └── FitText.jsx               auto-sizing big text
-└── hooks/
-    └── useClockModes.js          useNow, useTimer, useChrono,
-                                  useCountdownToTime, useNYE, playBeep
+/app/
+├── README.md                    portable run/deploy instructions
+└── frontend/
+    ├── public/index.html        no Emergent scripts, no badge, no PostHog
+    ├── craco.config.js          cleaned (no visual-edits)
+    ├── package.json             axios + @emergentbase/visual-edits removed
+    └── src/
+        ├── App.js               main shell, state, dock, settings sheet
+        ├── App.css              (empty)
+        ├── index.css            skin variables, layout, animations
+        ├── index.js             entry
+        ├── components/
+        │   └── FitText.jsx      auto-resizing big text
+        └── hooks/
+            └── useClockModes.js useNow / useTimer / useChrono /
+                                 useCountdownToTime / useNYE / playBeep
 ```
 
-## Skins
+## Skins (CSS variables on `[data-skin="…"]`)
 | Skin    | Bg            | Fg            | Font                     |
 |---------|--------------|--------------|--------------------------|
 | moshly  | #0E0F14       | gradient text | Inter 900                |
@@ -41,27 +42,33 @@
 | 8bit    | #000000       | #FFFFFF       | Press Start 2P           |
 | solari  | #15110D warm  | #F4D58D       | Anton (split-flap line)  |
 
-## Implemented (2026-05-27)
-- [x] 5 modes (NOW / TIMER / CHRONO / COUNTDOWN / NYE) with correct formats
-- [x] 4 skins with persistent selection
-- [x] Auto-resize big digits to fill screen (FitText)
-- [x] Compact bottom control bar (mode tabs + skin chips + transport + sound + fullscreen + hide UI)
-- [x] Setup drawer for TIMER (H/M/S inputs), COUNTDOWN (time input), NYE (10–60s slider)
-- [x] localStorage persistence: skin, mode, timer duration, countdown target, NYE threshold, sound
-- [x] Auto-hide controls in landscape after 2.5s inactivity (tap or key to restore)
-- [x] Sound on TIMER finish and COUNTDOWN/NYE zero — toggleable
-- [x] NYE last-seconds full-screen overlay (single big SS) when remaining ≤ threshold
-- [x] Web Fullscreen API toggle button
-- [x] All interactive elements have `data-testid`
+## Implemented
+### v0.1 (2026-05-27)
+- 5 modes (NOW / TIMER / CHRONO / COUNTDOWN / NYE)
+- 4 skins, skin picker pills on bottom bar
+- Auto-resize big digits, controls auto-hide in landscape
+- Sound on timer/countdown finish, fullscreen API, NYE last-seconds overlay (10–60s)
+
+### v0.2 (2026-05-27) — UI redesign + Emergent cleanup
+- **UI redesign**: bottom dock is now minimal (mode tabs centered with text+underline style, no pills; right side only transport-when-relevant + fullscreen + hide-UI + settings cog)
+- **Settings sheet** (right side, slide-in): skin cards with per-skin preview, sound toggle, NYE threshold slider
+- **Setup drawer** (timer H/M/S, countdown target, NYE threshold) opens above the dock when mode needs it
+- **Removed all Emergent dependencies**:
+  - `public/index.html`: no badge, no PostHog, no `emergent-main.js`, no error-event handler
+  - `craco.config.js`: no `@emergentbase/visual-edits/craco` wrapper
+  - `package.json`: removed `axios` and `@emergentbase/visual-edits`
+- **README** rewritten for standalone use, build, deploy, skin extension
 
 ## Backlog / Future
-- P1 — Custom date input for COUNTDOWN TO TIME (currently picks next occurrence of HH:MM today/tomorrow)
+- P1 — COUNTDOWN with date + time (not only HH:MM)
 - P1 — Lap times on CHRONO
-- P2 — Custom NYE target (any date, not only Jan 1)
-- P2 — Wake Lock API to keep screen on
-- P2 — PWA install + offline
-- P2 — Share / preset URLs (e.g. /timer/00:05:00)
+- P2 — NYE with custom target date (not only Jan 1)
+- P2 — Wake Lock to keep screen on
+- P2 — PWA (manifest + service worker) for installable offline use
+- P2 — Share URLs (`/timer/00:05:00?skin=solari`)
 
-## Notes
-- No backend changes made — `/api/*` endpoints untouched
-- No third-party integrations / no auth / no DB
+## Notes for taking the repo outside Emergent
+- Inside Emergent UI: use the **"Save to GitHub"** button (chat input) to create a repo and push.
+- Locally: `cd frontend && yarn install && yarn start`
+- Builds with `yarn build` → static `build/` directory, deploy on Vercel/Netlify/Cloudflare Pages/GitHub Pages/etc.
+- `backend/` folder is unused by the clock and can be deleted.
