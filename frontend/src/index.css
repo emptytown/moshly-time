@@ -1,115 +1,471 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* ===========================================================
+   BIG CLOCK — global reset, skin system, layout, animations
+   =========================================================== */
 
-body {
-    margin: 0;
-    font-family:
-        -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-        sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-code {
-    font-family:
-        source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: var(--bg, #000);
+  color: var(--fg, #fff);
+  font-family: var(--font-ui, "Inter", system-ui, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  overscroll-behavior: none;
 }
 
-@layer base {
-    :root {
-        --background: 0 0% 100%;
-        --foreground: 0 0% 3.9%;
-        --card: 0 0% 100%;
-        --card-foreground: 0 0% 3.9%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 0 0% 3.9%;
-        --primary: 0 0% 9%;
-        --primary-foreground: 0 0% 98%;
-        --secondary: 0 0% 96.1%;
-        --secondary-foreground: 0 0% 9%;
-        --muted: 0 0% 96.1%;
-        --muted-foreground: 0 0% 45.1%;
-        --accent: 0 0% 96.1%;
-        --accent-foreground: 0 0% 9%;
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 89.8%;
-        --input: 0 0% 89.8%;
-        --ring: 0 0% 3.9%;
-        --chart-1: 12 76% 61%;
-        --chart-2: 173 58% 39%;
-        --chart-3: 197 37% 24%;
-        --chart-4: 43 74% 66%;
-        --chart-5: 27 87% 67%;
-        --radius: 0.5rem;
-    }
-    .dark {
-        --background: 0 0% 3.9%;
-        --foreground: 0 0% 98%;
-        --card: 0 0% 3.9%;
-        --card-foreground: 0 0% 98%;
-        --popover: 0 0% 3.9%;
-        --popover-foreground: 0 0% 98%;
-        --primary: 0 0% 98%;
-        --primary-foreground: 0 0% 9%;
-        --secondary: 0 0% 14.9%;
-        --secondary-foreground: 0 0% 98%;
-        --muted: 0 0% 14.9%;
-        --muted-foreground: 0 0% 63.9%;
-        --accent: 0 0% 14.9%;
-        --accent-foreground: 0 0% 98%;
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 14.9%;
-        --input: 0 0% 14.9%;
-        --ring: 0 0% 83.1%;
-        --chart-1: 220 70% 50%;
-        --chart-2: 160 60% 45%;
-        --chart-3: 30 80% 55%;
-        --chart-4: 280 65% 60%;
-        --chart-5: 340 75% 55%;
-    }
+button {
+  font-family: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 }
 
-@layer base {
-    * {
-        @apply border-border;
-    }
-    body {
-        @apply bg-background text-foreground;
-    }
+input {
+  font-family: inherit;
+  color: inherit;
 }
 
-@layer base {
-    [data-debug-wrapper="true"] {
-        display: contents !important;
-    }
+/* ============================================================
+   SKINS
+   Each skin sets CSS variables on [data-skin="..."] root.
+   Variables consumed by app:
+     --bg         body background
+     --bg-panel   overlay panels
+     --fg         primary text / clock digits
+     --fg-muted   secondary text
+     --accent     active states / labels
+     --border     subtle borders
+     --font-clock font family for the big digits
+     --font-ui    font for controls
+     --clock-shadow text-shadow on digits (e.g. glow)
+     --bg-vfx     optional decorative background overlay
+   ============================================================ */
 
-    [data-debug-wrapper="true"] > * {
-        margin-left: inherit;
-        margin-right: inherit;
-        margin-top: inherit;
-        margin-bottom: inherit;
-        padding-left: inherit;
-        padding-right: inherit;
-        padding-top: inherit;
-        padding-bottom: inherit;
-        column-gap: inherit;
-        row-gap: inherit;
-        gap: inherit;
-        border-left-width: inherit;
-        border-right-width: inherit;
-        border-top-width: inherit;
-        border-bottom-width: inherit;
-        border-left-style: inherit;
-        border-right-style: inherit;
-        border-top-style: inherit;
-        border-bottom-style: inherit;
-        border-left-color: inherit;
-        border-right-color: inherit;
-        border-top-color: inherit;
-        border-bottom-color: inherit;
-    }
+/* ---------- 1) MOSHLY (from emptytown/Moshly-Site-Design-Tokens) ---------- */
+[data-skin="moshly"] {
+  --bg: #0E0F14;
+  --bg-panel: rgba(27, 30, 46, 0.7);
+  --fg: #E6E7EB;
+  --fg-muted: #A4A7B5;
+  --accent: #6B5CFF;
+  --accent-2: #C026D3;
+  --accent-3: #00E5FF;
+  --border: #24273A;
+  --font-clock: "Inter", "SF Pro Text", system-ui, sans-serif;
+  --font-ui: "Inter", system-ui, sans-serif;
+  --clock-weight: 900;
+  --clock-letter: -0.04em;
+  --clock-shadow: 0 0 80px rgba(107, 92, 255, 0.35),
+                  0 0 160px rgba(192, 38, 211, 0.18);
+  --bg-vfx: radial-gradient(
+              ellipse 80% 60% at 30% 20%,
+              rgba(107, 92, 255, 0.18) 0%,
+              transparent 60%
+            ),
+            radial-gradient(
+              ellipse 70% 50% at 80% 90%,
+              rgba(192, 38, 211, 0.12) 0%,
+              transparent 60%
+            );
 }
+[data-skin="moshly"] .clock-text {
+  background: linear-gradient(135deg, #E6E7EB 0%, #C026D3 60%, #00E5FF 120%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---------- 2) CODER (terminal: black bg, green) ---------- */
+[data-skin="coder"] {
+  --bg: #000000;
+  --bg-panel: rgba(0, 20, 0, 0.75);
+  --fg: #00FF66;
+  --fg-muted: #2E8B57;
+  --accent: #00FF66;
+  --accent-2: #00FF66;
+  --accent-3: #00FF66;
+  --border: #0a3a14;
+  --font-clock: "Share Tech Mono", "IBM Plex Mono", monospace;
+  --font-ui: "Share Tech Mono", monospace;
+  --clock-weight: 400;
+  --clock-letter: 0.02em;
+  --clock-shadow: 0 0 4px #00FF66, 0 0 24px rgba(0, 255, 102, 0.65),
+                  0 0 64px rgba(0, 255, 102, 0.35);
+  --bg-vfx: repeating-linear-gradient(
+              0deg,
+              rgba(0, 255, 102, 0.04) 0px,
+              rgba(0, 255, 102, 0.04) 1px,
+              transparent 1px,
+              transparent 3px
+            );
+}
+[data-skin="coder"] .clock-text::before {
+  content: "> ";
+  opacity: 0.4;
+}
+
+/* ---------- 3) 8BIT (black & white pixel) ---------- */
+[data-skin="8bit"] {
+  --bg: #000000;
+  --bg-panel: #000000;
+  --fg: #FFFFFF;
+  --fg-muted: #BFBFBF;
+  --accent: #FFFFFF;
+  --accent-2: #FFFFFF;
+  --accent-3: #FFFFFF;
+  --border: #FFFFFF;
+  --font-clock: "Press Start 2P", monospace;
+  --font-ui: "Press Start 2P", monospace;
+  --clock-weight: 400;
+  --clock-letter: 0em;
+  --clock-shadow: none;
+  --bg-vfx: none;
+}
+[data-skin="8bit"] * {
+  image-rendering: pixelated;
+}
+[data-skin="8bit"] .clock-text {
+  text-shadow: 4px 4px 0 #FFFFFF22;
+}
+
+/* ---------- 4) SOLARI (my creation — split-flap airport) ---------- */
+[data-skin="solari"] {
+  --bg: #15110D;
+  --bg-panel: rgba(40, 30, 20, 0.85);
+  --fg: #F4D58D;
+  --fg-muted: #A88859;
+  --accent: #F5A623;
+  --accent-2: #FF7849;
+  --accent-3: #F4D58D;
+  --border: #3A2E1F;
+  --font-clock: "Anton", "Bebas Neue", "Oswald", sans-serif;
+  --font-ui: "Inter", system-ui, sans-serif;
+  --clock-weight: 400;
+  --clock-letter: 0.01em;
+  --clock-shadow: 0 0 60px rgba(245, 166, 35, 0.18);
+  --bg-vfx:
+    radial-gradient(ellipse 100% 60% at 50% 100%,
+      rgba(245, 166, 35, 0.08) 0%, transparent 70%),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 14px,
+      rgba(0, 0, 0, 0.18) 14px,
+      rgba(0, 0, 0, 0.18) 15px
+    );
+}
+[data-skin="solari"] .clock-text {
+  position: relative;
+}
+/* horizontal split-flap fold line through the digits */
+[data-skin="solari"] .clock-text::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+
+.app-root {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-ui);
+}
+
+.bg-vfx {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-vfx);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.stage {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  padding: clamp(8px, 2vmin, 24px);
+  min-height: 0;
+}
+
+.clock-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: clamp(4px, 1.5vmin, 16px);
+}
+
+.clock-label {
+  font-family: var(--font-ui);
+  font-size: clamp(10px, 1.6vmin, 14px);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  opacity: 0.85;
+}
+
+.clock-text {
+  font-family: var(--font-clock);
+  font-weight: var(--clock-weight);
+  letter-spacing: var(--clock-letter);
+  line-height: 0.95;
+  color: var(--fg);
+  text-shadow: var(--clock-shadow);
+  white-space: nowrap;
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.clock-text .blink {
+  animation: blink 1s steps(2, start) infinite;
+}
+@keyframes blink {
+  to { opacity: 0.25; }
+}
+
+/* ============================================================
+   CONTROL PANEL
+   ============================================================ */
+
+.controls {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--bg-panel);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+.controls.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(100%);
+}
+
+.mode-tabs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.mode-tab {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+  background: transparent;
+  transition: all 180ms ease;
+}
+.mode-tab:hover { color: var(--fg); }
+.mode-tab.active {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+[data-skin="8bit"] .mode-tab { border-radius: 0; }
+[data-skin="8bit"] .mode-tab.active { color: #000; background: #fff; }
+
+.right-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+  transition: all 180ms ease;
+}
+.icon-btn:hover { color: var(--fg); border-color: var(--fg-muted); }
+.icon-btn.active { color: var(--accent); border-color: var(--accent); }
+[data-skin="8bit"] .icon-btn { border-radius: 0; }
+
+.skin-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.skin-chip {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+}
+.skin-chip:hover { color: var(--fg); }
+.skin-chip.active {
+  color: var(--fg);
+  border-color: var(--fg);
+}
+[data-skin="8bit"] .skin-chip { border-radius: 0; }
+
+/* ============================================================
+   SETUP DRAWER (timer / countdown inputs)
+   ============================================================ */
+
+.setup-drawer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  background: var(--bg-panel);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--border);
+  padding: 14px 16px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.field label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.field input,
+.field select {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: var(--fg);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  outline: none;
+  min-width: 110px;
+}
+.field input:focus,
+.field select:focus { border-color: var(--accent); }
+[data-skin="8bit"] .field input,
+[data-skin="8bit"] .field select { border-radius: 0; }
+
+.action-btn {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+  transition: all 160ms ease;
+}
+.action-btn:hover { filter: brightness(1.1); }
+.action-btn.ghost {
+  background: transparent;
+  color: var(--fg-muted);
+  border-color: var(--border);
+}
+.action-btn.ghost:hover { color: var(--fg); border-color: var(--fg-muted); }
+[data-skin="8bit"] .action-btn { border-radius: 0; }
+[data-skin="8bit"] .action-btn:not(.ghost) { color: #000; background: #fff; border-color: #fff; }
+
+/* ============================================================
+   NYE LAST-SECONDS FULLSCREEN
+   ============================================================ */
+
+.lastsec-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 24px;
+}
+.lastsec-overlay .clock-text {
+  font-size: min(80vw, 80vh);
+}
+.lastsec-overlay .clock-label {
+  font-size: 14px;
+}
+
+/* ============================================================
+   ORIENTATION — landscape: hide controls on idle
+   ============================================================ */
+@media (orientation: landscape) and (max-height: 500px) {
+  .controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
+/* ============================================================
+   UTILS
+   ============================================================ */
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.spacer { flex: 1; }
