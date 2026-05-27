@@ -1,4 +1,4 @@
-# Big Clock
+# Moshly Time
 
 A fullscreen clock web app with **5 modes** and **4 swappable skins**.
 
@@ -6,7 +6,7 @@ A fullscreen clock web app with **5 modes** and **4 swappable skins**.
 - **TIMER** — countdown from a duration `HH:mm:ss`
 - **CHRONO** — stopwatch with milliseconds `HH:mm:ss.ms`
 - **COUNTDOWN TO TIME** — counts down to the next occurrence of a wall-clock time `dd:hh:mm:ss`
-- **NYE** — countdown to next January 1st, with a customisable "last seconds" full-screen overlay (10–60 s)
+- **NYE** — countdown to next January 1st, with a customisable "last seconds" fullscreen overlay (10–60 s)
 
 **Skins:** Moshly · Coder · 8Bit · Solari (split-flap inspired)
 
@@ -18,9 +18,9 @@ Digits auto-scale to fill the viewport. In landscape, the UI auto-hides after a 
 
 - React 19 + Create React App (via [`craco`](https://github.com/dilanx/craco) for the `@/` alias)
 - `lucide-react` for icons
-- Plain CSS variables for skinning (no Tailwind in the clock — Tailwind is in deps but unused by the clock UI itself)
+- Plain CSS variables for skinning
 
-There is **no backend dependency** for the clock. A FastAPI scaffolding lives under `backend/` from the original template; you can safely delete it.
+No backend is needed for the clock. A FastAPI scaffold lives under `backend/` from the original template; you can safely delete it.
 
 ---
 
@@ -38,7 +38,7 @@ Build for production:
 yarn build           # outputs ./build
 ```
 
-You can host the `build/` directory on any static host (Vercel, Netlify, Cloudflare Pages, GitHub Pages, Nginx, …).
+Host the `build/` directory on any static host (Vercel, Netlify, Cloudflare Pages, GitHub Pages, Nginx, …).
 
 ---
 
@@ -67,35 +67,25 @@ frontend/
 
 1. Open `src/index.css`.
 2. Add a new block `[data-skin="myskin"] { … }` with the CSS variables (see the existing four for the full list).
-3. In `src/App.js`, add `{ id: "myskin", label: "My Skin" }` to the `SKINS` array.
+3. In `src/App.js`, add an entry to the `SKINS` array with a small preview object.
 
-That's it — the skin is selectable from the settings sheet.
+The skin becomes selectable from the settings sheet.
 
 ---
 
-## Detaching from Emergent
+## Clean tree (post-clone)
 
-This codebase has been cleaned of Emergent-specific runtime:
+This codebase has been stripped of the original Emergent runtime:
 
-- `public/index.html` no longer loads the Emergent badge, PostHog, or the Emergent main script.
+- `public/index.html` no longer loads the Emergent badge, PostHog, or main script.
 - `craco.config.js` no longer wraps with `@emergentbase/visual-edits`.
 - The frontend has no `axios` calls and does not need `REACT_APP_BACKEND_URL`.
 
-If you want a fully clean tree:
+After cloning you can remove the unused scaffold:
 
 ```bash
-# delete the unused backend scaffold
 rm -rf backend tests scripts
-
-# (optional) remove leftover devDeps from package.json
-# - @emergentbase/visual-edits  (already removed in this repo)
 ```
-
----
-
-## To push to a Git repo of your own
-
-From inside the Emergent UI, use the **"Save to GitHub"** button in the chat input — it creates a repo and pushes the codebase for you. After that you can clone it locally and continue with your normal workflow.
 
 ---
 

@@ -639,7 +639,7 @@ export default function App() {
                 opacity: 0.6,
               }}
             >
-              Big Clock · v0.2
+              Moshly Time · v0.2
             </div>
           </aside>
         </>
