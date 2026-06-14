@@ -161,6 +161,19 @@ export default function App() {
   // Now
   const now = useNow();
 
+  // Fade out and remove the static HTML loading indicator once the app has mounted.
+  useEffect(() => {
+    const loader = document.getElementById("app-loader");
+    if (!loader) return;
+
+    loader.classList.add("hide");
+    const remove = () => loader.remove();
+    loader.addEventListener("transitionend", remove, { once: true });
+    const fallback = setTimeout(remove, 450);
+
+    return () => clearTimeout(fallback);
+  }, []);
+
   /* persistence */
   useEffect(() => save(LS.skin, skin), [skin]);
   useEffect(() => loadSkinFont(skin), [skin]);

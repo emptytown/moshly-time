@@ -26,9 +26,49 @@
             />
         </noscript>
         <title>Moshly Time</title>
+        <style>
+          #app-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            transition: opacity 360ms ease;
+          }
+          #app-loader.hide {
+            opacity: 0;
+            pointer-events: none;
+          }
+          .app-loader-orb {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6B5CFF 0%, #C026D3 60%, #00E5FF 120%);
+            filter: blur(0.5px);
+            box-shadow: 0 0 40px rgba(107, 92, 255, 0.55),
+                        0 0 80px rgba(192, 38, 211, 0.35);
+            animation: app-loader-pulse 1.6s ease-in-out infinite;
+          }
+          @keyframes app-loader-pulse {
+            0%, 100% { transform: scale(0.85); opacity: 0.7; }
+            50%      { transform: scale(1.15); opacity: 1; }
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .app-loader-orb { animation: none; transform: scale(1); opacity: 0.9; }
+            #app-loader { transition: opacity 150ms linear; }
+          }
+        </style>
     </head>
     <body>
-        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <div id="app-loader" aria-hidden="true">
+            <div class="app-loader-orb"></div>
+        </div>
+        <noscript>
+            <style>#app-loader{display:none}</style>
+            You need to enable JavaScript to run this app.
+        </noscript>
         <div id="root"></div>
     </body>
 </html>
