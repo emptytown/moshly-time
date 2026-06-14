@@ -7,10 +7,24 @@
         <meta name="description" content="Moshly Time — fullscreen clock, timer, chronometer and countdown with switchable skins." />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <!--
+          Inter is the only font needed for first paint (default skin + UI text
+          on all skins). Loaded non-blocking via the media=print/onload swap so
+          it never delays first render; falls back to system-ui until ready.
+          The other skins' decorative fonts are lazy-loaded on demand in App.js.
+        -->
         <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&family=Share+Tech+Mono&family=Press+Start+2P&family=Anton&family=Major+Mono+Display&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&display=swap"
             rel="stylesheet"
+            media="print"
+            onload="this.media='all'"
         />
+        <noscript>
+            <link
+                href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&display=swap"
+                rel="stylesheet"
+            />
+        </noscript>
         <title>Moshly Time</title>
     </head>
     <body>

@@ -102,6 +102,25 @@ const save = (k, v) => {
   } catch {}
 };
 
+// Decorative fonts used by non-default skins. Inter (used by "moshly" and
+// for UI text on every skin) is loaded eagerly in index.html; these are
+// fetched on demand so first paint isn't held up by fonts most users won't see.
+const SKIN_FONT_FAMILIES = {
+  coder: "Share+Tech+Mono",
+  "8bit": "Press+Start+2P",
+  solari: "Anton",
+};
+const loadedSkinFonts = new Set();
+const loadSkinFont = (skinId) => {
+  const family = SKIN_FONT_FAMILIES[skinId];
+  if (!family || loadedSkinFonts.has(family)) return;
+  loadedSkinFonts.add(family);
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = `https://fonts.googleapis.com/css2?family=${family}&display=swap`;
+  document.head.appendChild(link);
+};
+
 export default function App() {
   const [skin, setSkin] = useState(() => load(LS.skin, "moshly"));
   const [mode, setMode] = useState(() => load(LS.mode, "now"));
@@ -144,6 +163,7 @@ export default function App() {
 
   /* persistence */
   useEffect(() => save(LS.skin, skin), [skin]);
+  useEffect(() => loadSkinFont(skin), [skin]);
   useEffect(() => save(LS.mode, mode), [mode]);
   useEffect(() => save(LS.sound, sound), [sound]);
   useEffect(() => save(LS.countdownTarget, countdownTarget), [countdownTarget]);
