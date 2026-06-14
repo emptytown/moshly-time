@@ -20,7 +20,7 @@ Digits auto-scale to fill the viewport. In landscape, the UI auto-hides after a 
 - `lucide-react` for icons
 - Plain CSS variables for skinning
 
-No backend is needed for the clock. A FastAPI scaffold lives under `backend/` from the original template; you can safely delete it.
+No backend is needed for the clock.
 
 ---
 
@@ -59,8 +59,7 @@ frontend/
 │                                    useCountdownToTime / useNYE / playBeep
 ├── package.json
 ├── craco.config.js
-├── jsconfig.json
-└── tailwind.config.js               (left over from template, harmless)
+└── jsconfig.json
 ```
 
 ### Adding a new skin
@@ -73,19 +72,16 @@ The skin becomes selectable from the settings sheet.
 
 ---
 
-## Clean tree (post-clone)
+## Clean tree
 
 This codebase has been stripped of the original Emergent runtime:
 
 - `public/index.html` no longer loads the Emergent badge, PostHog, or main script.
 - `craco.config.js` no longer wraps with `@emergentbase/visual-edits`.
 - The frontend has no `axios` calls and does not need `REACT_APP_BACKEND_URL`.
-
-After cloning you can remove the unused scaffold:
-
-```bash
-rm -rf backend tests scripts
-```
+- No leftover backend/test scaffold, no unused shadcn/Tailwind/Radix UI
+  dependencies — `frontend/package.json` only lists what the clock app
+  actually imports (React, `lucide-react`, and the CRA/craco build tooling).
 
 ---
 
