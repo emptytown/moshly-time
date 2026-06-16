@@ -16,13 +16,11 @@ export function useNow() {
 }
 
 /* ---------- TIMER (countdown from a duration) ---------- */
-export function useTimer(initialSec = 0, restoreRemainingMs = null, restoreRunning = false) {
-  const resMs = restoreRemainingMs !== null ? Math.max(0, restoreRemainingMs) : initialSec * 1000;
-  const startRunning = restoreRunning && resMs > 0;
-  const [running, setRunning] = useState(startRunning);
-  const [remainingMs, setRemainingMs] = useState(resMs);
+export function useTimer(initialSec = 0) {
+  const [running, setRunning] = useState(false);
+  const [remainingMs, setRemainingMs] = useState(initialSec * 1000);
   const [totalSec, setTotalSec] = useState(initialSec);
-  const endRef = useRef(startRunning ? Date.now() + resMs : null);
+  const endRef = useRef(null);
   const rafRef = useRef(null);
   const finishedRef = useRef(false);
   const onFinishRef = useRef(null);
@@ -79,12 +77,6 @@ export function useTimer(initialSec = 0, restoreRemainingMs = null, restoreRunni
   const h = pad(totalSecs / 3600);
   const m = pad((totalSecs % 3600) / 60);
   const s = pad(totalSecs % 60);
-
-  const getSnapshot = () => ({
-    remainingMs: running ? Math.max(0, endRef.current - Date.now()) : remainingMs,
-    running,
-  });
-
   return {
     text: `${h}:${m}:${s}`,
     running,
@@ -93,16 +85,15 @@ export function useTimer(initialSec = 0, restoreRemainingMs = null, restoreRunni
     pause,
     resume,
     reset,
-    getSnapshot,
   };
 }
 
 /* ---------- CHRONO (stopwatch with ms) ---------- */
-export function useChrono(restoreElapsedMs = 0, restoreRunning = false) {
-  const [running, setRunning] = useState(restoreRunning);
-  const [elapsedMs, setElapsedMs] = useState(restoreElapsedMs);
-  const startRef = useRef(restoreRunning ? Date.now() : 0);
-  const baseRef = useRef(restoreElapsedMs);
+export function useChrono() {
+  const [running, setRunning] = useState(false);
+  const [elapsedMs, setElapsedMs] = useState(0);
+  const startRef = useRef(0);
+  const baseRef = useRef(0);
   const rafRef = useRef(null);
 
   useEffect(() => {
@@ -136,12 +127,6 @@ export function useChrono(restoreElapsedMs = 0, restoreRunning = false) {
   const m = pad((totalMs % 3_600_000) / 60_000);
   const s = pad((totalMs % 60_000) / 1000);
   const ms = pad(totalMs % 1000, 3);
-
-  const getSnapshot = () => ({
-    elapsedMs: running ? baseRef.current + (Date.now() - startRef.current) : elapsedMs,
-    running,
-  });
-
   return {
     text: `${h}:${m}:${s}.${ms}`,
     running,
@@ -149,7 +134,6 @@ export function useChrono(restoreElapsedMs = 0, restoreRunning = false) {
     start,
     pause,
     reset,
-    getSnapshot,
   };
 }
 

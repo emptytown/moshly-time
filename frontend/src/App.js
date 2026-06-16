@@ -86,10 +86,6 @@ const LS = {
   countdownTarget: "bigclock.countdown.target",
   nyeThreshold: "bigclock.nye.threshold",
   sound: "bigclock.sound",
-  persistentApp: "bigclock.persistentApp",
-  timerSession: "bigclock.timer.session",
-  chronoSession: "bigclock.chrono.session",
-  countdownActive: "bigclock.countdown.active",
 };
 
 const load = (k, fb) => {
@@ -129,7 +125,6 @@ export default function App() {
   const [skin, setSkin] = useState(() => load(LS.skin, "moshly"));
   const [mode, setMode] = useState(() => load(LS.mode, "now"));
   const [sound, setSound] = useState(() => load(LS.sound, true));
-  const [persistentApp, setPersistentApp] = useState(() => load(LS.persistentApp, false));
   const [dockVisible, setDockVisible] = useState(true);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [setupOpen, setSetupOpen] = useState(false);
@@ -139,41 +134,16 @@ export default function App() {
   const [timerInputM, setTimerInputM] = useState("05");
   const [timerInputS, setTimerInputS] = useState("00");
   const timerInitialSec = load(LS.timerSec, 300);
-
-  // Compute restore state once on mount
-  const [timerRestore] = useState(() => {
-    if (!load(LS.persistentApp, false)) return { remainingMs: null, running: false };
-    const session = load(LS.timerSession, null);
-    if (!session) return { remainingMs: null, running: false };
-    const msElapsed = Date.now() - (session.savedAt || Date.now());
-    const remainingMs = session.running
-      ? Math.max(0, (session.remainingMs || 0) - msElapsed)
-      : (session.remainingMs || 0);
-    return { remainingMs, running: session.running && remainingMs > 0 };
-  });
-  const [chronoRestore] = useState(() => {
-    if (!load(LS.persistentApp, false)) return { elapsedMs: 0, running: false };
-    const session = load(LS.chronoSession, null);
-    if (!session) return { elapsedMs: 0, running: false };
-    const msElapsed = Date.now() - (session.savedAt || Date.now());
-    const elapsedMs = session.running
-      ? (session.elapsedMs || 0) + msElapsed
-      : (session.elapsedMs || 0);
-    return { elapsedMs, running: session.running };
-  });
-
-  const timer = useTimer(timerInitialSec, timerRestore.remainingMs, timerRestore.running);
+  const timer = useTimer(timerInitialSec);
 
   // Chrono
-  const chrono = useChrono(chronoRestore.elapsedMs, chronoRestore.running);
+  const chrono = useChrono();
 
   // Countdown to time
   const [countdownTarget, setCountdownTarget] = useState(() =>
     load(LS.countdownTarget, "23:30")
   );
-  const [countdownActive, setCountdownActive] = useState(() =>
-    load(LS.persistentApp, false) ? load(LS.countdownActive, false) : false
-  );
+  const [countdownActive, setCountdownActive] = useState(false);
   const countdown = useCountdownToTime(
     countdownTarget,
     countdownActive,
@@ -198,34 +168,6 @@ export default function App() {
   useEffect(() => save(LS.sound, sound), [sound]);
   useEffect(() => save(LS.countdownTarget, countdownTarget), [countdownTarget]);
   useEffect(() => save(LS.nyeThreshold, nyeThreshold), [nyeThreshold]);
-  useEffect(() => save(LS.persistentApp, persistentApp), [persistentApp]);
-
-  /* save timer/chrono/countdown session when app is hidden or unloaded */
-  const timerRef = useRef(timer);
-  const chronoRef = useRef(chrono);
-  const countdownActiveRef = useRef(countdownActive);
-  useEffect(() => { timerRef.current = timer; });
-  useEffect(() => { chronoRef.current = chrono; });
-  useEffect(() => { countdownActiveRef.current = countdownActive; }, [countdownActive]);
-  useEffect(() => {
-    if (!persistentApp) return;
-    const saveSession = () => {
-      const tSnap = timerRef.current.getSnapshot();
-      save(LS.timerSession, { ...tSnap, savedAt: Date.now() });
-      const cSnap = chronoRef.current.getSnapshot();
-      save(LS.chronoSession, { ...cSnap, savedAt: Date.now() });
-      save(LS.countdownActive, countdownActiveRef.current);
-    };
-    const onVisibility = () => {
-      if (document.visibilityState === "hidden") saveSession();
-    };
-    document.addEventListener("visibilitychange", onVisibility);
-    window.addEventListener("beforeunload", saveSession);
-    return () => {
-      document.removeEventListener("visibilitychange", onVisibility);
-      window.removeEventListener("beforeunload", saveSession);
-    };
-  }, [persistentApp]);
 
   /* auto-hide dock in landscape after inactivity */
   const hideTimer = useRef(null);
@@ -704,25 +646,6 @@ export default function App() {
                 onChange={(e) => setNyeThreshold(Number(e.target.value))}
                 data-testid="settings-nye-threshold"
               />
-            </div>
-
-            {/* Persistent App */}
-            <div className="section">
-              <div className="section-label">App State</div>
-              <button
-                className="toggle-row"
-                onClick={() => setPersistentApp((v) => !v)}
-                data-testid="settings-persistent-app-toggle"
-                style={{ background: "transparent", width: "100%" }}
-              >
-                <div style={{ textAlign: "left" }}>
-                  <div className="toggle-label">Persistent app</div>
-                  <div className="toggle-sub">
-                    Resume exactly where you left off after closing the PWA
-                  </div>
-                </div>
-                <div className={`toggle-switch ${persistentApp ? "on" : ""}`} />
-              </button>
             </div>
 
             <div style={{ flex: 1 }} />
