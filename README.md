@@ -42,6 +42,20 @@ yarn build           # outputs ./build
 
 Host the `build/` directory on any static host (Vercel, Netlify, Cloudflare Pages, GitHub Pages, Nginx, …).
 
+### Moshly deploy (time.moshly.io)
+
+Moshly Time is listed as a **free app** in the Moshly dashboard (`moshly-apps.js` in Moshly-Site points to `https://time.moshly.io`). Deploy it as its own Cloudflare Pages project:
+
+| Setting | Value |
+|---------|-------|
+| Repository | `emptytown/moshly-time`, branch `main` |
+| Root directory | `frontend` |
+| Build command | `yarn build` |
+| Output directory | `build` |
+| Custom domain | `time.moshly.io` |
+
+No environment variables, no login: it is a static page.
+
 ---
 
 ## Project layout (only what matters)
