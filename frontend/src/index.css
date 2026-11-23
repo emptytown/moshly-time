@@ -977,3 +977,102 @@ input {
   color: var(--paper-ink);
   opacity: 1;
 }
+
+/* ============================================================
+   NEO BRUT — touch-friendly dock (44px targets, as in
+   moshly-design-tokens --nb-size-target-touch / Apple HIG)
+   ============================================================ */
+[data-skin="neo"] .dock { gap: 12px; padding-top: 12px; }
+[data-skin="neo"] .dock-right { gap: 8px; }
+
+[data-skin="neo"] .icon-btn {
+  width: 44px;
+  height: 44px;
+  background: #FFFFFF;
+  color: var(--nb-ink);
+  border: var(--nb-border);
+  border-radius: 8px;
+  box-shadow: var(--nb-shadow-sm);
+  transition: transform 90ms ease, box-shadow 90ms ease, background 120ms ease;
+}
+[data-skin="neo"] .icon-btn svg {
+  width: 22px;
+  height: 22px;
+  stroke-width: 2.5;
+}
+[data-skin="neo"] .icon-btn:hover { background: var(--nb-paper-2); }
+[data-skin="neo"] .icon-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+[data-skin="neo"] .icon-btn:focus-visible {
+  outline: 3px solid var(--nb-purple);
+  outline-offset: 2px;
+}
+/* open setup drawer = "you are here" */
+[data-skin="neo"] .icon-btn.active {
+  background: var(--nb-lime);
+  color: var(--nb-ink);
+}
+/* primary action: start / resume */
+[data-skin="neo"] .icon-btn[data-testid="chrono-start-btn"],
+[data-skin="neo"] .icon-btn[data-testid="timer-resume-btn"] {
+  background: var(--nb-lime);
+}
+[data-skin="neo"] .transport {
+  gap: 8px;
+  margin-right: 4px;
+  padding-right: 12px;
+  border-right: var(--nb-border);
+}
+
+[data-skin="neo"] .mode-tab {
+  min-height: 44px;
+  padding: 0 14px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+[data-skin="neo"] .mode-tab:focus-visible {
+  outline: 3px solid var(--nb-purple);
+  outline-offset: 2px;
+}
+
+/* Phones: mode tabs become one full-width segmented bar */
+@media (max-width: 720px) {
+  [data-skin="neo"] .dock-center {
+    width: 100%;
+    overflow: visible;
+  }
+  [data-skin="neo"] .mode-tabs {
+    display: flex;
+    width: 100%;
+    gap: 0;
+    padding: 0;
+    background: #FFFFFF;
+    border: var(--nb-border);
+    border-radius: 8px;
+    box-shadow: var(--nb-shadow-sm);
+    overflow: hidden;
+  }
+  [data-skin="neo"] .mode-tab {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0 4px;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    border: none;
+    border-radius: 0;
+    color: var(--fg-muted);
+  }
+  [data-skin="neo"] .mode-tab + .mode-tab { border-left: 2px solid var(--nb-ink); }
+  [data-skin="neo"] .mode-tab.active {
+    border: none;
+    box-shadow: none;
+    background: var(--nb-lime);
+    color: var(--nb-ink);
+  }
+  [data-skin="neo"] .mode-tab + .mode-tab.active { border-left: 2px solid var(--nb-ink); }
+  [data-skin="neo"] .dock-right { justify-self: stretch; justify-content: center; }
+}
