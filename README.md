@@ -1,6 +1,6 @@
 # Moshly Time
 
-A fullscreen clock web app with **5 modes** and **4 swappable skins**.
+A fullscreen clock web app with **5 modes** and **6 swappable skins**.
 
 - **NOW** — current time `hh:mm:ss`
 - **TIMER** — countdown from a duration `HH:mm:ss`
@@ -8,7 +8,9 @@ A fullscreen clock web app with **5 modes** and **4 swappable skins**.
 - **COUNTDOWN TO TIME** — counts down to the next occurrence of a wall-clock time `dd:hh:mm:ss`
 - **NYE** — countdown to next January 1st, with a customisable "last seconds" fullscreen overlay (10–60 s)
 
-**Skins:** Moshly · Coder · 8Bit · Solari (split-flap inspired)
+**Skins:** Legacy Purple · Neo Brut · Paper · Coder · 8Bit · Solari (split-flap inspired)
+
+Legacy Purple, Neo Brut and Paper match the skins of the same name in Moshly-Run (Paper: white, Arial, solid colours only, no gradients or shadows); Neo Brut uses the official `moshly-design-tokens` neo-brut (light) palette, as on Moshly-Site.
 
 Digits auto-scale to fill the viewport. In landscape, the UI auto-hides after a couple of seconds — tap to bring it back. No backend, no auth, no telemetry. State persists in `localStorage`.
 
@@ -40,6 +42,20 @@ yarn build           # outputs ./build
 
 Host the `build/` directory on any static host (Vercel, Netlify, Cloudflare Pages, GitHub Pages, Nginx, …).
 
+### Moshly deploy (time.moshly.io)
+
+Moshly Time is listed as a **free app** in the Moshly dashboard (`moshly-apps.js` in Moshly-Site points to `https://time.moshly.io`). Deploy it as its own Cloudflare Pages project:
+
+| Setting | Value |
+|---------|-------|
+| Repository | `emptytown/moshly-time`, branch `main` |
+| Root directory | `frontend` |
+| Build command | `yarn build` |
+| Output directory | `build` |
+| Custom domain | `time.moshly.io` |
+
+No environment variables, no login: it is a static page.
+
 ---
 
 ## Project layout (only what matters)
@@ -65,7 +81,7 @@ frontend/
 ### Adding a new skin
 
 1. Open `src/index.css`.
-2. Add a new block `[data-skin="myskin"] { … }` with the CSS variables (see the existing four for the full list).
+2. Add a new block `[data-skin="myskin"] { … }` with the CSS variables (see the existing ones for the full list).
 3. In `src/App.js`, add an entry to the `SKINS` array with a small preview object.
 
 The skin becomes selectable from the settings sheet.

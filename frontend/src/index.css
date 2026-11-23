@@ -44,9 +44,9 @@ input {
    SKINS — see /README.md for variable list
    ============================================================ */
 
-/* ---------- 1) MOSHLY ---------- */
+/* ---------- 1) LEGACY PURPLE (id "moshly", as in Moshly-Run) ---------- */
 [data-skin="moshly"] {
-  --bg: #0E0F14;
+  --bg: #080B13;
   --bg-panel: rgba(20, 22, 36, 0.78);
   --bg-panel-solid: #141624;
   --fg: #E6E7EB;
@@ -68,7 +68,7 @@ input {
               rgba(192, 38, 211, 0.12) 0%, transparent 60%);
 }
 [data-skin="moshly"] .clock-text {
-  background: linear-gradient(135deg, #E6E7EB 0%, #C026D3 60%, #00E5FF 120%);
+  background: linear-gradient(135deg, #6B5CFF 0%, #C026D3 50%, #00E5FF 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -165,6 +165,84 @@ input {
   background: rgba(0, 0, 0, 0.55);
   pointer-events: none;
   transform: translateY(-1px);
+}
+
+/* ---------- 5) NEO BRUT (moshly-design-tokens/neo-brut, light) ----------
+   Same language as Moshly-Site and Moshly-Run: cream grid paper, white
+   cards, 2.5px ink, hard offset shadows, Inter Tight 900, lime for
+   "you are here" / primary actions, purple for identity. */
+[data-skin="neo"] {
+  --nb-ink: #111111;
+  --nb-lime: #D8FF54;
+  --nb-lime-hover: #E6FF8A;
+  --nb-purple: #C575F8;
+  --nb-purple-ink: #5B3DF5;
+  --nb-paper-2: #FFE9C2;
+  --nb-border: 2.5px solid #111111;
+  --nb-shadow-sm: 2px 2px 0 #111111;
+  --nb-shadow-md: 4px 4px 0 #111111;
+
+  --bg: #FFF3DD;
+  --bg-panel: #FFFFFF;
+  --bg-panel-solid: #FFFFFF;
+  --fg: #111111;
+  --fg-muted: #4B4B4B;
+  --fg-dim: #5E5E5E;
+  --accent: #5B3DF5;
+  --accent-2: #C575F8;
+  --accent-3: #D8FF54;
+  --border: #111111;
+  --font-clock: "Inter Tight", "Inter", system-ui, sans-serif;
+  --font-ui: "Inter Tight", "Inter", system-ui, sans-serif;
+  --clock-weight: 900;
+  --clock-letter: -0.045em;
+  --clock-shadow: 0.035em 0.035em 0 #C575F8;
+  --bg-vfx:
+    linear-gradient(#11111114 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(90deg, #11111114 1px, transparent 1px) 0 0 / 32px 32px;
+  color-scheme: light;
+}
+[data-skin="neo"] .clock-label {
+  color: var(--fg);
+  font-weight: 800;
+  opacity: 1;
+}
+
+/* ---------- 6) PAPER (as in Moshly-Run: light, flat, solid colours) ----------
+   Black on white, Arial, solid green for "you are here". No gradients,
+   glows, blur or shadows anywhere. */
+[data-skin="paper"] {
+  --paper-ink: #111111;
+  --paper-green: #00E03C;
+  --paper-line: #D0D0D0;
+
+  --bg: #FFFFFF;
+  --bg-panel: #FFFFFF;
+  --bg-panel-solid: #FFFFFF;
+  --fg: #111111;
+  --fg-muted: #4D4D4D;
+  --fg-dim: #6E6E6E;
+  --accent: #111111;
+  --accent-2: #111111;
+  --accent-3: #00E03C;
+  --border: #D0D0D0;
+  --font-clock: Arial, Helvetica, "Liberation Sans", sans-serif;
+  --font-ui: Arial, Helvetica, "Liberation Sans", sans-serif;
+  --clock-weight: 700;
+  --clock-letter: -0.03em;
+  --clock-shadow: none;
+  --bg-vfx: none;
+  color-scheme: light;
+}
+/* (skin-card previews keep their own look so other skins stay recognisable) */
+[data-skin="paper"] :not(.skin-card-preview),
+[data-skin="paper"] :not(.skin-card-preview)::before,
+[data-skin="paper"] :not(.skin-card-preview)::after {
+  box-shadow: none !important;
+  text-shadow: none !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
 }
 
 /* ============================================================
@@ -633,3 +711,269 @@ input {
 }
 .show-ui-fab:hover { opacity: 1; color: var(--fg); }
 [data-skin="8bit"] .show-ui-fab { border-radius: 0; }
+
+/* ============================================================
+   NEO BRUT — component overrides (flat: ink borders + hard shadows)
+   ============================================================ */
+[data-skin="neo"] .mode-tab {
+  font-weight: 800;
+  color: var(--fg-muted);
+  padding: 7px 10px;
+  border: 2.5px solid transparent;
+  border-radius: 6px;
+}
+[data-skin="neo"] .mode-tab:hover { color: var(--fg); }
+[data-skin="neo"] .mode-tab.active {
+  color: var(--nb-ink);
+  background: var(--nb-lime);
+  border: var(--nb-border);
+  box-shadow: var(--nb-shadow-sm);
+}
+[data-skin="neo"] .mode-tab.active::after { content: none; }
+
+[data-skin="neo"] .icon-btn {
+  border-radius: 6px;
+  color: var(--fg);
+}
+[data-skin="neo"] .icon-btn:hover { background: var(--nb-paper-2); }
+[data-skin="neo"] .icon-btn.active { color: var(--nb-purple-ink); }
+[data-skin="neo"] .transport { border-right: var(--nb-border); }
+
+[data-skin="neo"] .scrim {
+  background: rgba(17, 17, 17, 0.35);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+[data-skin="neo"] .sheet {
+  background: var(--bg);
+  border-left: var(--nb-border);
+}
+[data-skin="neo"] .sheet-title,
+[data-skin="neo"] .section-label {
+  color: var(--fg);
+  font-weight: 800;
+}
+
+[data-skin="neo"] .skin-card {
+  background: #FFFFFF;
+  border: var(--nb-border);
+  border-radius: 8px;
+  box-shadow: var(--nb-shadow-md);
+}
+[data-skin="neo"] .skin-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #111111;
+}
+[data-skin="neo"] .skin-card.active {
+  background: var(--nb-lime);
+  border-color: var(--nb-ink);
+  box-shadow: var(--nb-shadow-md);
+}
+[data-skin="neo"] .skin-card-name { font-weight: 800; }
+[data-skin="neo"] .skin-card-preview {
+  border: 2px solid var(--nb-ink);
+  border-radius: 6px;
+}
+
+[data-skin="neo"] .toggle-switch {
+  background: #FFFFFF;
+  border: var(--nb-border);
+}
+[data-skin="neo"] .toggle-switch::after {
+  top: 1px;
+  left: 1px;
+  background: var(--nb-ink);
+}
+[data-skin="neo"] .toggle-switch.on { background: var(--nb-lime); }
+[data-skin="neo"] .toggle-switch.on::after { background: var(--nb-ink); }
+
+[data-skin="neo"] .range {
+  height: 6px;
+  background: #FFFFFF;
+  border: 2px solid var(--nb-ink);
+}
+[data-skin="neo"] .range::-webkit-slider-thumb {
+  background: var(--nb-lime);
+  border: 2.5px solid var(--nb-ink);
+}
+[data-skin="neo"] .range::-moz-range-thumb {
+  background: var(--nb-lime);
+  border: 2.5px solid var(--nb-ink);
+}
+
+[data-skin="neo"] .setup-drawer {
+  background: #FFFFFF;
+  border: var(--nb-border);
+  border-radius: 8px;
+  box-shadow: var(--nb-shadow-md);
+}
+[data-skin="neo"] .field label {
+  color: var(--fg);
+  font-weight: 800;
+}
+[data-skin="neo"] .field input[type="number"],
+[data-skin="neo"] .field input[type="time"] {
+  background: #FFFFFF;
+  border: var(--nb-border);
+  border-radius: 6px;
+  font-weight: 500;
+}
+[data-skin="neo"] .field input:focus {
+  border-color: var(--nb-ink);
+  outline: 3px solid var(--nb-purple);
+  outline-offset: 1px;
+}
+
+[data-skin="neo"] .action-btn {
+  background: var(--nb-lime);
+  color: var(--nb-ink);
+  border: var(--nb-border);
+  border-radius: 6px;
+  font-weight: 800;
+  box-shadow: var(--nb-shadow-sm);
+}
+[data-skin="neo"] .action-btn:hover { filter: none; background: var(--nb-lime-hover); }
+[data-skin="neo"] .action-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+[data-skin="neo"] .action-btn.ghost {
+  background: #FFFFFF;
+  color: var(--nb-ink);
+  border-color: var(--nb-ink);
+}
+[data-skin="neo"] .action-btn.ghost:hover { background: var(--nb-paper-2); }
+
+[data-skin="neo"] .show-ui-fab {
+  background: #FFFFFF;
+  border: var(--nb-border);
+  border-radius: 6px;
+  color: var(--nb-ink);
+  box-shadow: var(--nb-shadow-sm);
+  opacity: 1;
+}
+
+/* ============================================================
+   NARROW SCREENS (phones in portrait) — stack the dock so the
+   mode tabs and the icon buttons both fit on screen
+   ============================================================ */
+@media (max-width: 720px) {
+  .dock {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 6px;
+    padding-top: 8px;
+  }
+  .dock-left { display: none; }
+  .dock-center {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .dock-center::-webkit-scrollbar { display: none; }
+  .mode-tabs { gap: 14px; padding: 0 2px 4px; }
+  .mode-tab { letter-spacing: 0.18em; white-space: nowrap; }
+  .dock-right { justify-self: center; }
+
+  [data-skin="neo"] .mode-tabs { gap: 4px; padding: 0 6px 6px; }
+  [data-skin="neo"] .mode-tab { padding: 6px 8px; letter-spacing: 0.1em; }
+  [data-skin="8bit"] .mode-tab { font-size: 9px; letter-spacing: 0.08em; }
+  [data-skin="paper"] .mode-tabs { gap: 3px; }
+  [data-skin="paper"] .mode-tab { padding: 6px 7px; letter-spacing: 0.12em; }
+}
+
+/* ============================================================
+   PAPER — component overrides (solid fills, 3px corners)
+   ============================================================ */
+[data-skin="paper"] .dock { background: var(--bg); }
+[data-skin="paper"] .clock-label { color: var(--fg-muted); font-weight: 700; opacity: 1; }
+
+[data-skin="paper"] .mode-tab {
+  font-weight: 700;
+  color: var(--fg-dim);
+  padding: 7px 10px;
+  border-radius: 3px;
+}
+[data-skin="paper"] .mode-tab:hover { color: var(--fg); }
+[data-skin="paper"] .mode-tab.active {
+  color: var(--paper-ink);
+  background: var(--paper-green);
+}
+[data-skin="paper"] .mode-tab.active::after { content: none; }
+
+[data-skin="paper"] .icon-btn { border-radius: 3px; color: var(--fg); }
+[data-skin="paper"] .icon-btn:hover { background: #F0F0F0; }
+[data-skin="paper"] .icon-btn.active { background: var(--paper-green); color: var(--paper-ink); }
+[data-skin="paper"] .transport { border-right-color: var(--paper-line); }
+
+[data-skin="paper"] .scrim { background: rgba(17, 17, 17, 0.4); }
+[data-skin="paper"] .sheet { border-left: 1px solid var(--paper-ink); }
+[data-skin="paper"] .sheet-title,
+[data-skin="paper"] .section-label { color: var(--fg); font-weight: 700; }
+
+[data-skin="paper"] .skin-card {
+  background: #FFFFFF;
+  border: 1px solid var(--paper-line);
+  border-radius: 3px;
+}
+[data-skin="paper"] .skin-card:hover { transform: none; border-color: var(--paper-ink); }
+[data-skin="paper"] .skin-card.active {
+  background: var(--paper-green);
+  border-color: var(--paper-ink);
+}
+[data-skin="paper"] .skin-card-name { font-weight: 700; }
+[data-skin="paper"] .skin-card-preview {
+  border: 1px solid var(--paper-ink);
+  border-radius: 3px;
+}
+
+[data-skin="paper"] .toggle-switch {
+  border-radius: 3px;
+  background: #FFFFFF;
+  border: 1px solid var(--paper-ink);
+}
+[data-skin="paper"] .toggle-switch::after {
+  border-radius: 2px;
+  background: var(--paper-ink);
+}
+[data-skin="paper"] .toggle-switch.on { background: var(--paper-green); }
+[data-skin="paper"] .toggle-switch.on::after { background: var(--paper-ink); }
+
+[data-skin="paper"] .range { background: var(--paper-line); border-radius: 3px; }
+[data-skin="paper"] .range::-webkit-slider-thumb { background: var(--paper-ink); border-radius: 3px; }
+[data-skin="paper"] .range::-moz-range-thumb { background: var(--paper-ink); border-radius: 3px; }
+
+[data-skin="paper"] .setup-drawer {
+  border: 1px solid var(--paper-ink);
+  border-radius: 3px;
+}
+[data-skin="paper"] .field label { color: var(--fg); font-weight: 700; }
+[data-skin="paper"] .field input[type="number"],
+[data-skin="paper"] .field input[type="time"] {
+  background: #FFFFFF;
+  border: 1px solid var(--paper-line);
+  border-radius: 3px;
+}
+[data-skin="paper"] .field input:focus { border-color: var(--paper-ink); }
+
+[data-skin="paper"] .action-btn {
+  background: var(--paper-ink);
+  border-color: var(--paper-ink);
+  color: #FFFFFF;
+  border-radius: 3px;
+  font-weight: 700;
+}
+[data-skin="paper"] .action-btn:hover { filter: none; background: #333333; }
+[data-skin="paper"] .action-btn.ghost {
+  background: #FFFFFF;
+  color: var(--paper-ink);
+  border-color: var(--paper-ink);
+}
+[data-skin="paper"] .action-btn.ghost:hover { background: #F0F0F0; }
+
+[data-skin="paper"] .show-ui-fab {
+  border: 1px solid var(--paper-ink);
+  border-radius: 3px;
+  color: var(--paper-ink);
+  opacity: 1;
+}
