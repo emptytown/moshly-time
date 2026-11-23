@@ -1,6 +1,6 @@
 # Moshly Time
 
-A fullscreen clock web app with **5 modes** and **5 swappable skins**.
+A fullscreen clock web app with **5 modes** and **6 swappable skins**.
 
 - **NOW** — current time `hh:mm:ss`
 - **TIMER** — countdown from a duration `HH:mm:ss`
@@ -8,9 +8,9 @@ A fullscreen clock web app with **5 modes** and **5 swappable skins**.
 - **COUNTDOWN TO TIME** — counts down to the next occurrence of a wall-clock time `dd:hh:mm:ss`
 - **NYE** — countdown to next January 1st, with a customisable "last seconds" fullscreen overlay (10–60 s)
 
-**Skins:** Legacy Purple · Neo Brut · Coder · 8Bit · Solari (split-flap inspired)
+**Skins:** Legacy Purple · Neo Brut · Paper · Coder · 8Bit · Solari (split-flap inspired)
 
-Legacy Purple and Neo Brut match the skins of the same name in Moshly-Run; Neo Brut uses the official `moshly-design-tokens` neo-brut (light) palette, as on Moshly-Site.
+Legacy Purple, Neo Brut and Paper match the skins of the same name in Moshly-Run (Paper: white, Arial, solid colours only, no gradients or shadows); Neo Brut uses the official `moshly-design-tokens` neo-brut (light) palette, as on Moshly-Site.
 
 Digits auto-scale to fill the viewport. In landscape, the UI auto-hides after a couple of seconds — tap to bring it back. No backend, no auth, no telemetry. State persists in `localStorage`.
 

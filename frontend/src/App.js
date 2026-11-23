@@ -56,6 +56,16 @@ const SKINS = [
     },
   },
   {
+    id: "paper",
+    label: "Paper",
+    preview: {
+      bg: "#FFFFFF",
+      fg: "#111111",
+      font: 'Arial, Helvetica, "Liberation Sans", sans-serif',
+      weight: 700,
+    },
+  },
+  {
     id: "coder",
     label: "Coder",
     preview: {
