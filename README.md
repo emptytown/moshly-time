@@ -88,19 +88,6 @@ The skin becomes selectable from the settings sheet.
 
 ---
 
-## Clean tree
-
-This codebase has been stripped of the original Emergent runtime:
-
-- `public/index.html` no longer loads the Emergent badge, PostHog, or main script.
-- `craco.config.js` no longer wraps with `@emergentbase/visual-edits`.
-- The frontend has no `axios` calls and does not need `REACT_APP_BACKEND_URL`.
-- No leftover backend/test scaffold, no unused shadcn/Tailwind/Radix UI
-  dependencies — `frontend/package.json` only lists what the clock app
-  actually imports (React, `lucide-react`, and the CRA/craco build tooling).
-
----
-
 ## License
 
 MIT — do whatever you want with it.
