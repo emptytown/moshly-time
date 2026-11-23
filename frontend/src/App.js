@@ -34,14 +34,25 @@ const MODES = [
 const SKINS = [
   {
     id: "moshly",
-    label: "Moshly",
+    label: "Legacy Purple",
     preview: {
-      bg: "linear-gradient(135deg, #1a1230 0%, #0E0F14 100%)",
+      bg: "linear-gradient(135deg, #1a1230 0%, #080B13 100%)",
       fg: "#fff",
       font: '"Inter", system-ui, sans-serif',
       weight: 900,
       gradient:
-        "linear-gradient(135deg, #E6E7EB 0%, #C026D3 60%, #00E5FF 120%)",
+        "linear-gradient(135deg, #6B5CFF 0%, #C026D3 50%, #00E5FF 100%)",
+    },
+  },
+  {
+    id: "neo",
+    label: "Neo Brut",
+    preview: {
+      bg: "#FFF3DD",
+      fg: "#111111",
+      font: '"Inter Tight", "Inter", system-ui, sans-serif',
+      weight: 900,
+      shadow: "2px 2px 0 #C575F8",
     },
   },
   {
@@ -109,6 +120,7 @@ const SKIN_FONT_FAMILIES = {
   coder: "Share+Tech+Mono",
   "8bit": "Press+Start+2P",
   solari: "Anton",
+  neo: "Inter+Tight:wght@500;700;800;900",
 };
 const loadedSkinFonts = new Set();
 const loadSkinFont = (skinId) => {

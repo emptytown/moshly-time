@@ -44,9 +44,9 @@ input {
    SKINS — see /README.md for variable list
    ============================================================ */
 
-/* ---------- 1) MOSHLY ---------- */
+/* ---------- 1) LEGACY PURPLE (id "moshly", as in Moshly-Run) ---------- */
 [data-skin="moshly"] {
-  --bg: #0E0F14;
+  --bg: #080B13;
   --bg-panel: rgba(20, 22, 36, 0.78);
   --bg-panel-solid: #141624;
   --fg: #E6E7EB;
@@ -68,7 +68,7 @@ input {
               rgba(192, 38, 211, 0.12) 0%, transparent 60%);
 }
 [data-skin="moshly"] .clock-text {
-  background: linear-gradient(135deg, #E6E7EB 0%, #C026D3 60%, #00E5FF 120%);
+  background: linear-gradient(135deg, #6B5CFF 0%, #C026D3 50%, #00E5FF 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -165,6 +165,47 @@ input {
   background: rgba(0, 0, 0, 0.55);
   pointer-events: none;
   transform: translateY(-1px);
+}
+
+/* ---------- 5) NEO BRUT (moshly-design-tokens/neo-brut, light) ----------
+   Same language as Moshly-Site and Moshly-Run: cream grid paper, white
+   cards, 2.5px ink, hard offset shadows, Inter Tight 900, lime for
+   "you are here" / primary actions, purple for identity. */
+[data-skin="neo"] {
+  --nb-ink: #111111;
+  --nb-lime: #D8FF54;
+  --nb-lime-hover: #E6FF8A;
+  --nb-purple: #C575F8;
+  --nb-purple-ink: #5B3DF5;
+  --nb-paper-2: #FFE9C2;
+  --nb-border: 2.5px solid #111111;
+  --nb-shadow-sm: 2px 2px 0 #111111;
+  --nb-shadow-md: 4px 4px 0 #111111;
+
+  --bg: #FFF3DD;
+  --bg-panel: #FFFFFF;
+  --bg-panel-solid: #FFFFFF;
+  --fg: #111111;
+  --fg-muted: #4B4B4B;
+  --fg-dim: #5E5E5E;
+  --accent: #5B3DF5;
+  --accent-2: #C575F8;
+  --accent-3: #D8FF54;
+  --border: #111111;
+  --font-clock: "Inter Tight", "Inter", system-ui, sans-serif;
+  --font-ui: "Inter Tight", "Inter", system-ui, sans-serif;
+  --clock-weight: 900;
+  --clock-letter: -0.045em;
+  --clock-shadow: 0.035em 0.035em 0 #C575F8;
+  --bg-vfx:
+    linear-gradient(#11111114 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(90deg, #11111114 1px, transparent 1px) 0 0 / 32px 32px;
+  color-scheme: light;
+}
+[data-skin="neo"] .clock-label {
+  color: var(--fg);
+  font-weight: 800;
+  opacity: 1;
 }
 
 /* ============================================================
@@ -633,3 +674,171 @@ input {
 }
 .show-ui-fab:hover { opacity: 1; color: var(--fg); }
 [data-skin="8bit"] .show-ui-fab { border-radius: 0; }
+
+/* ============================================================
+   NEO BRUT — component overrides (flat: ink borders + hard shadows)
+   ============================================================ */
+[data-skin="neo"] .mode-tab {
+  font-weight: 800;
+  color: var(--fg-muted);
+  padding: 7px 10px;
+  border: 2.5px solid transparent;
+  border-radius: 6px;
+}
+[data-skin="neo"] .mode-tab:hover { color: var(--fg); }
+[data-skin="neo"] .mode-tab.active {
+  color: var(--nb-ink);
+  background: var(--nb-lime);
+  border: var(--nb-border);
+  box-shadow: var(--nb-shadow-sm);
+}
+[data-skin="neo"] .mode-tab.active::after { content: none; }
+
+[data-skin="neo"] .icon-btn {
+  border-radius: 6px;
+  color: var(--fg);
+}
+[data-skin="neo"] .icon-btn:hover { background: var(--nb-paper-2); }
+[data-skin="neo"] .icon-btn.active { color: var(--nb-purple-ink); }
+[data-skin="neo"] .transport { border-right: var(--nb-border); }
+
+[data-skin="neo"] .scrim {
+  background: rgba(17, 17, 17, 0.35);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+[data-skin="neo"] .sheet {
+  background: var(--bg);
+  border-left: var(--nb-border);
+}
+[data-skin="neo"] .sheet-title,
+[data-skin="neo"] .section-label {
+  color: var(--fg);
+  font-weight: 800;
+}
+
+[data-skin="neo"] .skin-card {
+  background: #FFFFFF;
+  border: var(--nb-border);
+  border-radius: 8px;
+  box-shadow: var(--nb-shadow-md);
+}
+[data-skin="neo"] .skin-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #111111;
+}
+[data-skin="neo"] .skin-card.active {
+  background: var(--nb-lime);
+  border-color: var(--nb-ink);
+  box-shadow: var(--nb-shadow-md);
+}
+[data-skin="neo"] .skin-card-name { font-weight: 800; }
+[data-skin="neo"] .skin-card-preview {
+  border: 2px solid var(--nb-ink);
+  border-radius: 6px;
+}
+
+[data-skin="neo"] .toggle-switch {
+  background: #FFFFFF;
+  border: var(--nb-border);
+}
+[data-skin="neo"] .toggle-switch::after {
+  top: 1px;
+  left: 1px;
+  background: var(--nb-ink);
+}
+[data-skin="neo"] .toggle-switch.on { background: var(--nb-lime); }
+[data-skin="neo"] .toggle-switch.on::after { background: var(--nb-ink); }
+
+[data-skin="neo"] .range {
+  height: 6px;
+  background: #FFFFFF;
+  border: 2px solid var(--nb-ink);
+}
+[data-skin="neo"] .range::-webkit-slider-thumb {
+  background: var(--nb-lime);
+  border: 2.5px solid var(--nb-ink);
+}
+[data-skin="neo"] .range::-moz-range-thumb {
+  background: var(--nb-lime);
+  border: 2.5px solid var(--nb-ink);
+}
+
+[data-skin="neo"] .setup-drawer {
+  background: #FFFFFF;
+  border: var(--nb-border);
+  border-radius: 8px;
+  box-shadow: var(--nb-shadow-md);
+}
+[data-skin="neo"] .field label {
+  color: var(--fg);
+  font-weight: 800;
+}
+[data-skin="neo"] .field input[type="number"],
+[data-skin="neo"] .field input[type="time"] {
+  background: #FFFFFF;
+  border: var(--nb-border);
+  border-radius: 6px;
+  font-weight: 500;
+}
+[data-skin="neo"] .field input:focus {
+  border-color: var(--nb-ink);
+  outline: 3px solid var(--nb-purple);
+  outline-offset: 1px;
+}
+
+[data-skin="neo"] .action-btn {
+  background: var(--nb-lime);
+  color: var(--nb-ink);
+  border: var(--nb-border);
+  border-radius: 6px;
+  font-weight: 800;
+  box-shadow: var(--nb-shadow-sm);
+}
+[data-skin="neo"] .action-btn:hover { filter: none; background: var(--nb-lime-hover); }
+[data-skin="neo"] .action-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+[data-skin="neo"] .action-btn.ghost {
+  background: #FFFFFF;
+  color: var(--nb-ink);
+  border-color: var(--nb-ink);
+}
+[data-skin="neo"] .action-btn.ghost:hover { background: var(--nb-paper-2); }
+
+[data-skin="neo"] .show-ui-fab {
+  background: #FFFFFF;
+  border: var(--nb-border);
+  border-radius: 6px;
+  color: var(--nb-ink);
+  box-shadow: var(--nb-shadow-sm);
+  opacity: 1;
+}
+
+/* ============================================================
+   NARROW SCREENS (phones in portrait) — stack the dock so the
+   mode tabs and the icon buttons both fit on screen
+   ============================================================ */
+@media (max-width: 720px) {
+  .dock {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 6px;
+    padding-top: 8px;
+  }
+  .dock-left { display: none; }
+  .dock-center {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .dock-center::-webkit-scrollbar { display: none; }
+  .mode-tabs { gap: 14px; padding: 0 2px 4px; }
+  .mode-tab { letter-spacing: 0.18em; white-space: nowrap; }
+  .dock-right { justify-self: center; }
+
+  [data-skin="neo"] .mode-tabs { gap: 4px; padding: 0 6px 6px; }
+  [data-skin="neo"] .mode-tab { padding: 6px 8px; letter-spacing: 0.1em; }
+  [data-skin="8bit"] .mode-tab { font-size: 9px; letter-spacing: 0.08em; }
+}
