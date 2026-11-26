@@ -1,0 +1,3 @@
+# Only Moshly may show Time inside a frame (Browshly: moshly.io/app?app=time).
+/*
+  Content-Security-Policy: frame-ancestors 'self' https://moshly.io
