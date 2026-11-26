@@ -21,6 +21,10 @@ import {
   playBeep,
 } from "@/hooks/useClockModes";
 import "@/App.css";
+import { createMoshlyShell } from "@/lib/moshlyShell";
+
+/** Browshly (moshly.io/app?app=time): see lib/moshlyShell.js. */
+const shell = createMoshlyShell({ app: "time" });
 
 const MODES = [
   { id: "now", label: "Now" },
@@ -186,6 +190,13 @@ export default function App() {
   /* persistence */
   useEffect(() => save(LS.skin, skin), [skin]);
   useEffect(() => loadSkinFont(skin), [skin]);
+  // Browshly: paint its bar in this skin's colours once they apply (the skin lives on .app-root).
+  useEffect(() => {
+    const frame = requestAnimationFrame(() =>
+      shell.setTheme(shell.themeFromCss(document.querySelector(".app-root"))),
+    );
+    return () => cancelAnimationFrame(frame);
+  }, [skin]);
   useEffect(() => save(LS.mode, mode), [mode]);
   useEffect(() => save(LS.sound, sound), [sound]);
   useEffect(() => save(LS.countdownTarget, countdownTarget), [countdownTarget]);
