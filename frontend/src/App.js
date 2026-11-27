@@ -22,6 +22,7 @@ import {
 } from "@/hooks/useClockModes";
 import "@/App.css";
 import { createMoshlyShell } from "@/lib/moshlyShell";
+import { chooseSkin, onReturn, pickerOrder, resolveSkin } from "@/lib/moshlySkins";
 
 /** Browshly (moshly.io/app?app=time): see lib/moshlyShell.js. */
 const shell = createMoshlyShell({ app: "time" });
@@ -104,6 +105,12 @@ const SKINS = [
   },
 ];
 
+const TIME_SKINS = {
+  storageKey: "time.skinChoice",
+  skins: SKINS.map((s) => s.id),
+  family: { neo: "neo", legacy: "moshly" },
+};
+
 const LS = {
   skin: "bigclock.skin",
   mode: "bigclock.mode",
@@ -148,7 +155,20 @@ const loadSkinFont = (skinId) => {
 };
 
 export default function App() {
-  const [skin, setSkin] = useState(() => load(LS.skin, "moshly"));
+  // Moshly mixed skins: Neo Brut and Legacy Purple ("moshly") follow the user across apps;
+  // Paper, Coder, 8-bit and Solari are Time-only.
+  const [skin, setSkinState] = useState(() => {
+    try {
+      // Migration: a skin picked before the shared family counts as the oldest choice.
+      if (!localStorage.getItem(TIME_SKINS.storageKey)) {
+        const old = load(LS.skin, null);
+        if (old && TIME_SKINS.skins.includes(old)) localStorage.setItem(TIME_SKINS.storageKey, `${old}.1`);
+      }
+    } catch { /* storage blocked */ }
+    return resolveSkin(TIME_SKINS);
+  });
+  const setSkin = (id) => { chooseSkin(TIME_SKINS, id); setSkinState(id); };
+  useEffect(() => onReturn(() => setSkinState(resolveSkin(TIME_SKINS))), []);
   const [mode, setMode] = useState(() => load(LS.mode, "now"));
   const [sound, setSound] = useState(() => load(LS.sound, true));
   const [dockVisible, setDockVisible] = useState(true);
@@ -586,7 +606,7 @@ export default function App() {
             <div className="section" data-testid="settings-skin-section">
               <div className="section-label">Skin</div>
               <div className="skin-grid">
-                {SKINS.map((s) => (
+                {pickerOrder(TIME_SKINS).map(({ id, special }) => SKINS.find((x) => x.id === id)).map((s) => (
                   <button
                     key={s.id}
                     className={`skin-card ${skin === s.id ? "active" : ""}`}
@@ -600,6 +620,7 @@ export default function App() {
                     }}
                   >
                     <span className="skin-card-name">{s.label}</span>
+                    {!["neo", "moshly"].includes(s.id) && <span className="skin-card-tag">Only in Time</span>}
                     <span
                       className="skin-card-preview"
                       style={{

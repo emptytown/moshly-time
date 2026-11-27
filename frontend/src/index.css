@@ -505,6 +505,17 @@ input {
 }
 [data-skin="8bit"] .skin-card { border-radius: 0; }
 
+.skin-card-tag {
+  align-self: flex-start;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 1px 6px;
+}
 .skin-card-name {
   font-size: 13px;
   letter-spacing: 0.18em;
